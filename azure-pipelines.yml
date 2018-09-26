@@ -5,6 +5,13 @@
 # GITHUB_TOKEN
 # NUGET_TOKEN
 
+trigger:
+  branches:
+    # Disable builds on new tags
+    exclude:
+      - tags/*
+      - refs/tags/*
+
 jobs:
   - job: Linux
     pool:
