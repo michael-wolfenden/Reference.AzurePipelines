@@ -29,14 +29,14 @@ This token is used to authenticate with GitHub to read repository information, p
 
 Create a [new personal access token](https://github.com/settings/tokens/new) with following scopes:
 
-![access token scopes](https://i.imgur.com/7Fx7G0p.png "access token scopes")
+![access token scopes](https://i.imgur.com/vWIB1iQ.png "access token scopes")
 
 ### NUGET_TOKEN
 This token is used to authenticate with NuGet to push packages.
 
 Create a [new api key](https://www.nuget.org/account/apikeys) with following scopes:
 
-![api key scopes](https://i.imgur.com/AbOO87S.png "api key scopes")
+![api key scopes](https://i.imgur.com/0iNGQ6V.png "api key scopes")
 
 ### Using the tokens with Azure Pipelines
 
