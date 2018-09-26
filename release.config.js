@@ -16,7 +16,7 @@ module.exports = {
   publish: [
     {
       path: '@semantic-release/exec',
-      cmd: `dotnet nuget push .\\artifacts\\*.nupkg -k ${
+      cmd: `dotnet nuget push artifacts/**/*.nupkg -k ${
         process.env.NUGET_TOKEN
       } -s https://api.nuget.org/v3/index.json`,
     },
