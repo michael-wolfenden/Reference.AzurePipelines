@@ -12,7 +12,13 @@ module.exports = {
     '@semantic-release/git',
     '@semantic-release/github',
   ],
-  prepare: ['@semantic-release/changelog', '@semantic-release/git'],
+  prepare: [
+    '@semantic-release/changelog',
+    {
+      path: '@semantic-release/git',
+      message: 'chore(release): ${nextRelease.version} [***NO_CI***]\n\n${nextRelease.notes}',
+    },
+  ],
   publish: [
     {
       path: '@semantic-release/exec',
