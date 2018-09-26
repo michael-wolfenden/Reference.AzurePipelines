@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <!-- Nuget: https://docs.microsoft.com/en-us/dotnet/core/tools/csproj#nuget-metadata-properties -->
+  <PropertyGroup>
+    <Authors>Michael Wolfenden</Authors>
+    <Description>
+      NET Standard library reference implementation built via Azure Pipelines.
+    </Description>
+    <PackageProjectUrl>https://github.com/michael-wolfenden/Reference.AzurePipelines</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/michael-wolfenden/Reference.AzurePipelines</RepositoryUrl>
+    <PackageLicenseUrl>https://github.com/michael-wolfenden/Reference.AzurePipelines/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/michael-wolfenden/Reference.AzurePipelines/master/assets/logo.png</PackageIconUrl>
+  </PropertyGroup>
+  <!-- End Nuget -->
+
+  <!-- Sourcelink: https://github.com/dotnet/sourcelink/ -->
+  <PropertyGroup>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All"/>
+  </ItemGroup>
+  <!-- End Sourcelink -->
+
+</Project>

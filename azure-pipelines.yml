@@ -1,0 +1,67 @@
+# Perform linux and windows builds in parallel and then trigger release on success
+
+# NOTE: you must have the following variables set in your pipeline as secret variables
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=vsts&tabs=yaml%2Cbatch#secret-variables
+# GITHUB_TOKEN
+# NUGET_TOKEN
+
+jobs:
+  - job: Linux
+    pool:
+      vmImage: ubuntu-16.04
+    steps:
+      - task: NodeTool@0
+        displayName: 'Install node 10.3.0'
+        inputs:
+          # semantic-version requires node > 8.3
+          versionSpec: 10.3.0
+      - powershell: .\build.ps1
+        displayName: 'Cake 🍰 - Build & Test'
+        env:
+          # need to explicitly map so they are decrypted
+          GITHUB_TOKEN: $(GITHUB_TOKEN)
+          NUGET_TOKEN: $(NUGET_TOKEN)
+      - task: PublishBuildArtifacts@1
+        displayName: 'Storing built nuget packages'
+        inputs:
+          PathtoPublish: artifacts
+
+  - job: Windows
+    pool:
+      vmImage: vs2017-win2016
+    steps:
+      - task: NodeTool@0
+        displayName: 'Install node 10.3.0'
+        inputs:
+          # semantic-version requires node > 8.3
+          versionSpec: 10.3.0
+      - powershell: .\build.ps1
+        displayName: 'Cake 🍰 - Build & Test'
+        env:
+          # need to explicitly map so they are decrypted
+          GITHUB_TOKEN: $(GITHUB_TOKEN)
+          NUGET_TOKEN: $(NUGET_TOKEN)
+      - task: PublishBuildArtifacts@1
+        displayName: 'Storing built nuget packages'
+        inputs:
+          PathtoPublish: artifacts
+
+  - job: Release
+    dependsOn:
+      - Windows
+      - Linux
+    pool:
+      vmImage: ubuntu-16.04
+    steps:
+      - task: DownloadBuildArtifacts@0
+        displayName: 'Downloading built nuget packages'
+        inputs:
+          downloadType: specific
+          itemPattern: 'drop/**'
+          downloadPath: artifacts
+      - powershell: .\build.ps1 -target Release_if_changes_since_the_last_release
+        displayName: 'Cake 🍰 - Release if changes since the last release'
+        env:
+          # need to explicitly map so they are decrypted
+          GITHUB_TOKEN: $(GITHUB_TOKEN)
+          NUGET_TOKEN: $(NUGET_TOKEN)
