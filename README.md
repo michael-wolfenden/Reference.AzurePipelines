@@ -1,5 +1,6 @@
 # Reference.AzurePipelines
 
+[![Build Status](https://michaelwolfenden.visualstudio.com/Reference.AzurePipelines/_apis/build/status/Reference.AzurePipelines-CI)](https://michaelwolfenden.visualstudio.com/Reference.AzurePipelines/_build/latest?definitionId=4)
 [![nuget](https://img.shields.io/nuget/v/Reference.AzurePipelines.svg)](https://www.nuget.org/packages/Reference.AzurePipelines/)
 [![github license](https://img.shields.io/github/license/michael-wolfenden/Reference.AzurePipelines.svg)](https://github.com/michael-wolfenden/Reference.AzurePipelines/blob/master/LICENSE)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
