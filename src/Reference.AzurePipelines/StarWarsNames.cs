@@ -8,6 +8,7 @@ namespace StarWars.Names
     {
         private static readonly IReadOnlyList<string> Characters = new List<string>
         {
+            "2-1B",
             "4-LOM",
             "Aayla Secura",
             "Admiral Ackbar",
