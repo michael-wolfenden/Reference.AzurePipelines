@@ -8,8 +8,8 @@
 trigger:
   branches:
     include:
-    - master
-    # Disable builds on new tags
+      - master
+      # Disable builds on new tags
     exclude:
       - tags/*
       - refs/tags/*
@@ -30,6 +30,11 @@ jobs:
           # need to explicitly map so they are decrypted
           GITHUB_TOKEN: $(GITHUB_TOKEN)
           NUGET_TOKEN: $(NUGET_TOKEN)
+      - task: PublishTestResults@2
+        displayName: 'Publish test results'
+        inputs:
+          testRunner: VSTest
+          testResultsFiles: '**/*.trx'
       - task: PublishBuildArtifacts@1
         displayName: 'Storing built nuget packages'
         inputs:
@@ -50,6 +55,11 @@ jobs:
           # need to explicitly map so they are decrypted
           GITHUB_TOKEN: $(GITHUB_TOKEN)
           NUGET_TOKEN: $(NUGET_TOKEN)
+      - task: PublishTestResults@2
+        displayName: 'Publish test results'
+        inputs:
+          testRunner: VSTest
+          testResultsFiles: '**/*.trx'
       - task: PublishBuildArtifacts@1
         displayName: 'Storing built nuget packages'
         inputs:

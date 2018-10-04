@@ -128,6 +128,8 @@ Task("Run_tests")
         DotNetCoreTest(testProject.FullPath, new DotNetCoreTestSettings
         {
             Configuration = buildContext.Configuration,
+            ResultsDirectory = buildContext.ArtifactsDir,
+            Logger = "trx",
             NoBuild = true,
             NoRestore = true
         });
