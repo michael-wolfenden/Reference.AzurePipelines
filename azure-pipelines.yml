@@ -35,6 +35,7 @@ jobs:
         inputs:
           testRunner: VSTest
           testResultsFiles: '**/*.trx'
+          testRunTitle: 'Linux Test Run'
       - task: PublishBuildArtifacts@1
         displayName: 'Storing built nuget packages'
         inputs:
@@ -60,6 +61,7 @@ jobs:
         inputs:
           testRunner: VSTest
           testResultsFiles: '**/*.trx'
+          testRunTitle: 'Windows Test Run'
       - task: PublishBuildArtifacts@1
         displayName: 'Storing built nuget packages'
         inputs:
