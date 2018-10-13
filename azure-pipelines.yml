@@ -1,46 +1,66 @@
-# Perform linux and windows builds in parallel and then trigger release on success
-
+# ========================================================================
+# Perform windows and linux builds in parallel and then trigger a release build on success
+#
 # NOTE: you must have the following variables set in your pipeline as secret variables
-# https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=vsts&tabs=yaml%2Cbatch#secret-variables
 # GITHUB_TOKEN
 # NUGET_TOKEN
+#
+# For details, see https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=vsts&tabs=yaml%2Cbatch#secret-variables
+# ========================================================================
 
+# Only trigger CI builds for the master branch, instead of every branch or tags.
+# You'll automatically be configured to build PRs, but you can't currently control
+# that from the YAML directly
+# For details, see https://docs.microsoft.com/en-us/azure/devops/pipelines/build/triggers
 trigger:
   branches:
     include:
       - master
-      # Disable builds on new tags
     exclude:
       - tags/*
       - refs/tags/*
 
+# We can run multiple jobs in parallel. For this project i'm running
+# windows and linux jobs.
+# For details, see https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases
 jobs:
   - job: Linux
     pool:
       vmImage: ubuntu-16.04
     steps:
+      # Install node 10.3.0 as semantic-version requires node > 8.3
       - task: NodeTool@0
         displayName: 'Install node 10.3.0'
         inputs:
-          # semantic-version requires node > 8.3
           versionSpec: 10.3.0
+      # Build and run tests via Cake.
+      # The produced nuget package and test results will be output to the artifacts folder
       - powershell: .\build.ps1
         displayName: 'Cake 🍰 - Build & Test'
         env:
-          # need to explicitly map so they are decrypted
+          # Need to explicitly re-map these secret variables so they are decrypted
           GITHUB_TOKEN: $(GITHUB_TOKEN)
           NUGET_TOKEN: $(NUGET_TOKEN)
+          # Don’t send any telemetry data.
+          DOTNET_CLI_TELEMETRY_OPTOUT: true
+          # This will prevent the CLI from pre-populating the packages cache.
+          DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+      # Publish the test results produced by the build so they are visible
+      # in the tests tab
       - task: PublishTestResults@2
         displayName: 'Publish test results'
         inputs:
           testRunner: VSTest
           testResultsFiles: '**/*.trx'
           testRunTitle: 'Linux Test Run'
+      # Store the built nuget package so they can be downloaded by the
+      # 'Release' job
       - task: PublishBuildArtifacts@1
         displayName: 'Storing built nuget packages'
         inputs:
           PathtoPublish: artifacts
 
+  # Run a build on macOS at the same time
   - job: Windows
     pool:
       vmImage: vs2017-win2016
@@ -48,14 +68,14 @@ jobs:
       - task: NodeTool@0
         displayName: 'Install node 10.3.0'
         inputs:
-          # semantic-version requires node > 8.3
           versionSpec: 10.3.0
       - powershell: .\build.ps1
         displayName: 'Cake 🍰 - Build & Test'
         env:
-          # need to explicitly map so they are decrypted
           GITHUB_TOKEN: $(GITHUB_TOKEN)
           NUGET_TOKEN: $(NUGET_TOKEN)
+          DOTNET_CLI_TELEMETRY_OPTOUT: true
+          DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
       - task: PublishTestResults@2
         displayName: 'Publish test results'
         inputs:
@@ -67,6 +87,7 @@ jobs:
         inputs:
           PathtoPublish: artifacts
 
+  # If Windows and Linux all build successfully
   - job: Release
     dependsOn:
       - Windows
@@ -74,15 +95,20 @@ jobs:
     pool:
       vmImage: ubuntu-16.04
     steps:
+      # Download the stored nuget package
       - task: DownloadBuildArtifacts@0
         displayName: 'Downloading built nuget packages'
         inputs:
           downloadType: specific
           itemPattern: 'drop/**'
           downloadPath: artifacts
+      # Run the Cake 'Release' target which will trigger a release
+      # (Publish to nuget, create a release on github, update the CHANGELOG)
+      # if semantic-release detects any changes since the last release
       - powershell: .\build.ps1 -target Release_if_changes_since_the_last_release
         displayName: 'Cake 🍰 - Release if changes since the last release'
         env:
-          # need to explicitly map so they are decrypted
           GITHUB_TOKEN: $(GITHUB_TOKEN)
           NUGET_TOKEN: $(NUGET_TOKEN)
+          DOTNET_CLI_TELEMETRY_OPTOUT: true
+          DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
