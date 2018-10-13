@@ -1,6 +1,6 @@
 # Reference.AzurePipelines
 
-[![Build Status](https://michaelwolfenden.visualstudio.com/Reference.AzurePipelines/_apis/build/status/Reference.AzurePipelines-CI)](https://michaelwolfenden.visualstudio.com/Reference.AzurePipelines/_build/latest?definitionId=4)
+[![Build Status](https://michaelwolfenden.visualstudio.com/Reference.AzurePipelines/_apis/build/status/Reference.AzurePipelines-CI?branchName=master)](https://michaelwolfenden.visualstudio.com/Reference.AzurePipelines/_build/latest?definitionId=4)
 [![nuget](https://img.shields.io/nuget/v/Reference.AzurePipelines.svg)](https://www.nuget.org/packages/Reference.AzurePipelines/)
 [![nuget downloads](https://img.shields.io/nuget/dt/Reference.AzurePipelines.svg)](https://www.nuget.org/packages/Reference.AzurePipelines/)
 [![github last commit](https://img.shields.io/github/last-commit/michael-wolfenden/Reference.AzurePipelines.svg)](https://github.com/michael-wolfenden/Reference.AzurePipelines)
