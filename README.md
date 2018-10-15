@@ -18,10 +18,12 @@ To serve as a reference for building a NET Standard library with a [CI/CD](https
 ### Features
 
 - [x] Automatic Versioning, Publishing and Changelog generation using [semantic-release](https://github.com/semantic-release/semantic-release)
+- [x] [Strong Naming](https://docs.microsoft.com/en-us/dotnet/standard/library-guidance/strong-naming#create-strong-named-net-libraries)
 - [x] [SourceLink](https://github.com/dotnet/sourcelink/) support
 - [x] Performs both Windows and Linux builds using [Azure Pipleines](https://azure.microsoft.com/en-au/services/devops/pipelines/) and [Cake](https://cakebuild.net/)
 - [x] Testing via [xUnit.net](https://xunit.github.io/)
 - [x] [EditorConfig](https://docs.microsoft.com/en-us/visualstudio/ide/create-portable-custom-editor-options) support
+- [x] Follows Microsoft's  [open-source library guidance](https://docs.microsoft.com/en-us/dotnet/standard/library-guidance/)
 
 ## Access tokens
 

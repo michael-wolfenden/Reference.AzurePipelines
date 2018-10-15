@@ -115,6 +115,10 @@ Task("Build_solution")
             Configuration = buildContext.Configuration,
             MSBuildSettings = new DotNetCoreMSBuildSettings()
                 .SetVersion(buildContext.ReleaseVersion)
+                .SetFileVersion(buildContext.ReleaseVersion)
+                // Only including a major version in the AssemblyVersion to reduce binding redirects
+                // https://docs.microsoft.com/en-us/dotnet/standard/library-guidance/versioning#assembly-version
+                .WithProperty("AssemblyVersion", $"{Version.Parse(buildContext.ReleaseVersion).Major}.0.0")
                 .SetMaxCpuCount(buildContext.UseAsManyProcessesAsThereAreAvailableCPUs)
         });
     }
