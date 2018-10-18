@@ -1,0 +1,42 @@
+parameters:
+  name: ''
+  image: ''
+
+jobs:
+  - job: ${{ parameters.name }}
+    pool:
+      vmImage: ${{ parameters.image }}
+
+    steps:
+      # Install node 10.3.0 as semantic-version requires node > 8.3
+      - task: NodeTool@0
+        displayName: 'Install node 10.3.0'
+        inputs:
+          versionSpec: 10.3.0
+
+      # Build and run tests via Cake.
+      # The produced nuget package and test results will be output to the artifacts folder
+      - powershell: .\build.ps1
+        displayName: 'Cake 🍰 - Build & Test'
+        env:
+          # Need to explicitly re-map these secret variables so they are decrypted
+          GITHUB_TOKEN: $(GITHUB_TOKEN)
+          NUGET_TOKEN: $(NUGET_TOKEN)
+          # Don’t send any telemetry data.
+          DOTNET_CLI_TELEMETRY_OPTOUT: true
+          # This will prevent the CLI from pre-populating the packages cache.
+          DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+
+      # Publish the test results produced by the build so they are visible in the tests tab
+      - task: PublishTestResults@2
+        displayName: 'Publish test results'
+        inputs:
+          testRunner: VSTest
+          testResultsFiles: '**/*.trx'
+          testRunTitle: '${{ parameters.name }} Test Run'
+
+      # Store the built nuget package so they can be downloaded by the 'Release' job
+      - task: PublishBuildArtifacts@1
+        displayName: 'Storing built nuget packages'
+        inputs:
+          PathtoPublish: artifacts
