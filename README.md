@@ -18,7 +18,7 @@ To serve as a reference for building a NET Standard library with a [CI/CD](https
 
 ### Features
 
-- [x] Automatic Versioning, Publishing and Changelog generation using [semantic-release](https://github.com/semantic-release/semantic-release)
+- [x] Automatic Versioning, [Publishing](https://github.com/michael-wolfenden/Reference.AzurePipelines/releases) and [Changelog](https://github.com/michael-wolfenden/Reference.AzurePipelines/blob/master/CHANGELOG.md) generation using [semantic-release](https://github.com/semantic-release/semantic-release)
 - [x] [Strong Naming](https://docs.microsoft.com/en-us/dotnet/standard/library-guidance/strong-naming#create-strong-named-net-libraries)
 - [x] [SourceLink](https://github.com/dotnet/sourcelink/) support
 - [x] Performs both Windows and Linux builds using [Azure Pipelines](https://azure.microsoft.com/en-au/services/devops/pipelines/) and [Cake](https://cakebuild.net/)
@@ -49,10 +49,15 @@ Create a [new api key](https://www.nuget.org/account/apikeys) with following sco
 Once you have both tokens, you can add `GITHUB_TOKEN` and `NUGET_TOKEN` as [secret Pipeline variables](
 https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=vsts&tabs=yaml%2Cbatch#secret-variables) in your PipeLine's settings. They will automatically be decrypted in the `azure-pipelines.yml` script.
 
-## Credits
-This is a port of the [original project](https://github.com/kentcdodds/starwars-names) by [Kent C. Dodds](https://kentcdodds.com/)
+## Versioning
 
-Icons made by [Smashicons](https://www.flaticon.com/authors/smashicons) from [www.flaticon.com](https://www.flaticon.com) is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/)
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/michael-wolfenden/Reference.AzurePipelines/tags).
 
 ## License
-MIT © [Michael Wolfenden](https://michael-wolfenden.github.io/)
+
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/michael-wolfenden/Reference.AzurePipelines/blob/master/LICENSE) file for details
+
+## Acknowledgments
+
+* This is a port of the [original project](https://github.com/kentcdodds/starwars-names) by [Kent C. Dodds](https://kentcdodds.com/)
+* Icons made by [Smashicons](https://www.flaticon.com/authors/smashicons) from [www.flaticon.com](https://www.flaticon.com) is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/)
