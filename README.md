@@ -55,7 +55,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/michael-wolfenden/Reference.AzurePipelines/blob/master/LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/michael-wolfenden/Reference.AzurePipelines/blob/master/LICENSE.md) file for details
 
 ## Acknowledgments
 
