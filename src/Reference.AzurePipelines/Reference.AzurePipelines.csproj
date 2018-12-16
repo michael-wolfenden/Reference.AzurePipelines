@@ -12,7 +12,7 @@
     </Description>
     <PackageProjectUrl>https://github.com/michael-wolfenden/Reference.AzurePipelines</PackageProjectUrl>
     <RepositoryUrl>https://github.com/michael-wolfenden/Reference.AzurePipelines</RepositoryUrl>
-    <PackageLicenseUrl>https://github.com/michael-wolfenden/Reference.AzurePipelines/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseUrl>https://github.com/michael-wolfenden/Reference.AzurePipelines/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/michael-wolfenden/Reference.AzurePipelines/master/assets/logo.png</PackageIconUrl>
   </PropertyGroup>
   <!-- End Nuget -->
