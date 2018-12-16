@@ -127,11 +127,11 @@ Task("Build_solution")
 Task("Run_tests")
     .Does<BuildContext>(buildContext =>
 {
-    foreach(var solution in buildContext.Solutions)
+    foreach(var testProject in buildContext.TestProjects)
     {
-        Information("Testing solution {0}", solution.GetFilenameWithoutExtension());
+        Information("Testing project {0}", testProject.GetFilenameWithoutExtension());
 
-        DotNetCoreTest(solution.FullPath, new DotNetCoreTestSettings
+        DotNetCoreTest(testProject.FullPath, new DotNetCoreTestSettings
         {
             Configuration = buildContext.Configuration,
             ResultsDirectory = buildContext.ArtifactsDir,
