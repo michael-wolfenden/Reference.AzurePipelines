@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/michael-wolfenden/Reference.AzurePipelines/compare/v2.0.0...v2.0.1) (2018-12-16)
+
+
+### Bug Fixes
+
+* The 'licenseUrl' element will be deprecated ([45c15d5](https://github.com/michael-wolfenden/Reference.AzurePipelines/commit/45c15d5))
+
 # [2.0.0](https://github.com/michael-wolfenden/Reference.AzurePipelines/compare/v1.1.0...v2.0.0) (2018-10-15)
 
 
