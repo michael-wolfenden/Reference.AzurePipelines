@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/michael-wolfenden/Reference.AzurePipelines/compare/v2.0.1...v2.1.0) (2018-12-17)
+
+
+### Features
+
+* Add character 'Hardcase' ([5c337fc](https://github.com/michael-wolfenden/Reference.AzurePipelines/commit/5c337fc))
+
 ## [2.0.1](https://github.com/michael-wolfenden/Reference.AzurePipelines/compare/v2.0.0...v2.0.1) (2018-12-16)
 
 
