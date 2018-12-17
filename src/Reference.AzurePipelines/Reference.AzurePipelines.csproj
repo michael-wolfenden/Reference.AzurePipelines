@@ -4,7 +4,7 @@
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
   </PropertyGroup>
 
-  <!-- Nuget: https://docs.microsoft.com/en-us/dotnet/core/tools/csproj#nuget-metadata-properties -->
+  <!-- NuGet: https://docs.microsoft.com/en-us/nuget/reference/msbuild-targets#pack-target -->
   <PropertyGroup>
     <Authors>Michael Wolfenden</Authors>
     <Description>
@@ -19,14 +19,14 @@
   <ItemGroup>
     <None Include="..\..\LICENSE.md" Pack="true" PackagePath="$(PackageLicenseFile)"/>
   </ItemGroup>
-  <!-- End Nuget -->
+  <!-- End NuGet -->
 
   <!-- Strong naming: https://docs.microsoft.com/en-us/dotnet/standard/library-guidance/strong-naming -->
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../Reference.AzurePipelines.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <!-- End Nuget -->
+  <!-- End Strong naming -->
 
   <!-- Sourcelink: https://github.com/dotnet/sourcelink/ -->
   <PropertyGroup>
