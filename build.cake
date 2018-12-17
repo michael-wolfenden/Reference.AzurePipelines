@@ -39,6 +39,9 @@ Teardown(context =>
 Task("Default")
     .IsDependentOn("Build");
 
+Task("Release_if_changes_since_the_last_release")
+    .IsDependentOn("Release");
+
 Task("Build")
     .IsDependentOn("Run_dotnet_info")
     .IsDependentOn("Clean")
@@ -79,28 +82,26 @@ NOTE: The GITHUB_TOKEN environment variable will need to be set
 so that semantic-release can access the repository
 */
 Task("Get_next_release_number")
+    .WithCriteria<BuildContext>(
+        (_, buildContext) => buildContext.IsRunningOnRemoteMasterBranch ||
+                             buildContext.Target == "Get_next_release_number",
+        "Skipped as build not triggered by remote 'master' branch commit"
+    )
     .Does<BuildContext>(buildContext =>
 {
-    if (buildContext.IsRunningOnRemoteMasterBranch || buildContext.Target == "Get_next_release_number")
-    {
-        Information("Running semantic-release in dry run mode to extract next release number");
+    Information("Running semantic-release in dry run mode to extract next release number");
 
-        string[] semanticReleaseOutput;
-        Npx("semantic-release", "--dry-run", requiredSemanticVersionPackages, out semanticReleaseOutput);
+    string[] semanticReleaseOutput;
+    Npx("semantic-release", "--dry-run", requiredSemanticVersionPackages, out semanticReleaseOutput);
 
-        Information(string.Join(Environment.NewLine, semanticReleaseOutput));
+    Information(string.Join(Environment.NewLine, semanticReleaseOutput));
 
-        var hasReleaseVersionChanged = buildContext.SetReleaseVersionFrom(semanticReleaseOutput);
+    var hasReleaseVersionChanged = buildContext.SetReleaseVersionFrom(semanticReleaseOutput);
 
-        if (hasReleaseVersionChanged)
-            Information("Next release number is {0}", buildContext.ReleaseVersion);
-        else
-            Warning("There are no relevant changes since the last release");
-    }
+    if (hasReleaseVersionChanged)
+        Information("Next release number is {0}", buildContext.ReleaseVersion);
     else
-    {
-        Information("Skipped as build not triggered by remote 'master' branch commit");
-    }
+        Warning("There are no relevant changes since the last release");
 });
 
 Task("Build_solution")
@@ -160,20 +161,15 @@ Task("Package")
     }
 });
 
-Task("Release_if_changes_since_the_last_release")
+Task("Release")
+    .WithCriteria<BuildContext>(
+        (_, buildContext) => buildContext.IsRunningOnRemoteMasterBranch,
+        "Skipped as build not triggered by remote 'master' branch commit"
+    )
     .Does<BuildContext>(buildContext =>
 {
-    // See https://github.com/cake-build/cake/issues/106 for why we
-    // can't use a `WithCriteria` for this check
-    if (buildContext.IsRunningOnRemoteMasterBranch)
-    {
-        Information("Running semantic-release to detect whether to perform a release");
-        Npx("semantic-release", requiredSemanticVersionPackages);
-    }
-    else
-    {
-        Information("Skipped as build not triggered by remote 'master' branch commit");
-    }
+    Information("Running semantic-release to detect whether to perform a release");
+    Npx("semantic-release", requiredSemanticVersionPackages);
 });
 
 ///////////////////////////////////////////////////////////////////////////////
