@@ -14,6 +14,12 @@ jobs:
         inputs:
           versionSpec: 10.3.0
 
+      # Install dotnet sdk 2.1.500 as the windows image doesn't have it yet
+      - task: DotNetCoreInstaller@0
+        displayName: Install SDK 2.1.500
+        inputs:
+          version: '2.1.500'
+
       # Build and run tests via Cake.
       # The produced nuget package and test results will be output to the artifacts folder
       - powershell: .\build.ps1
