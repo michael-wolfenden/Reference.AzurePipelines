@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/michael-wolfenden/Reference.AzurePipelines/compare/v2.1.0...v2.2.0) (2018-12-17)
+
+
+### Features
+
+* Add character 'Sio Bibble'  ([cae725b](https://github.com/michael-wolfenden/Reference.AzurePipelines/commit/cae725b))
+
 # [2.1.0](https://github.com/michael-wolfenden/Reference.AzurePipelines/compare/v2.0.1...v2.1.0) (2018-12-17)
 
 
