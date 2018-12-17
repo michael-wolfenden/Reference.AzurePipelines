@@ -54,6 +54,7 @@ namespace StarWars.Names
             "Grand Moff Tarkin",
             "Greedo",
             "Han Solo",
+            "Hardcase",
             "IG 88",
             "Jabba The Hutt",
             "Jacen Solo",
