@@ -95,6 +95,7 @@ namespace StarWars.Names
             "Sebulba",
             "Shaak Ti",
             "Shmi Skywalker",
+            "Sio Bibble",
             "Talon Karrde",
             "Ulic Qel-Droma",
             "Visas Marr",
