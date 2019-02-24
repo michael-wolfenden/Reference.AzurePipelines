@@ -13,6 +13,12 @@ jobs:
         DOTNET_ROOT: ${{ parameters.dotnet_root }}
 
     steps:
+      # Install node 10.3.0 as macOS only has Node.js 8.11.3
+      - task: NodeTool@0
+        displayName: 'Install node 10.3.0'
+        inputs:
+          versionSpec: 10.3.0
+    
       # Build and run tests via Cake.
       # The produced nuget package and test results will be output to the artifacts folder
       - powershell: .\build.ps1
