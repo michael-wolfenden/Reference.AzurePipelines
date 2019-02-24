@@ -1,5 +1,5 @@
 # ========================================================================
-# Perform linux and windows builds in parallel and then trigger a release build on success
+# Perform linux, macos and windows builds in parallel and then trigger a release build on success
 #
 # NOTE: you must have the following variables set in your pipeline as secret variables
 # GITHUB_TOKEN
@@ -20,7 +20,7 @@ trigger:
       - tags/*
       - refs/tags/*
 
-# Run the linux and windows jobs in parallel
+# Run the linux, macOS and windows jobs in parallel
 # For details, see https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases
 jobs:
   - template: azure-pipelines_common.yml
@@ -33,7 +33,13 @@ jobs:
       name: Windows
       image: vs2017-win2016
 
-  # If the linux and windows jobs finish successfully
+  - template: azure-pipelines_common.yml
+    parameters:
+      name: macOS
+      image: xcode9-macos10.13
+      dotnet_root: /Users/vsts/.dotnet
+
+  # If the linux, macOS and windows jobs finish successfully
   - job: Release
     pool:
       vmImage: ubuntu-16.04
