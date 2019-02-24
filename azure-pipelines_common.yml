@@ -1,11 +1,16 @@
 parameters:
   name: ''
   image: ''
+  dotnet_root: ''
 
 jobs:
   - job: ${{ parameters.name }}
     pool:
       vmImage: ${{ parameters.image }}
+
+    variables:
+      ${{ if ne(parameters.dotnet_root, '') }}:
+        DOTNET_ROOT: ${{ parameters.dotnet_root }}
 
     steps:
       # Build and run tests via Cake.
