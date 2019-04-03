@@ -1,6 +1,6 @@
 Param
 (
-    [String]$CakeVersion = "0.32.1",
+    [String]$CakeVersion = "0.33.0",
     [String]$Target      = "Default",
     [String]$ToolPath    = [io.path]::combine($PSScriptRoot, "tools"),
     [String]$ToolExe     = [io.path]::combine($ToolPath, "dotnet-cake")
