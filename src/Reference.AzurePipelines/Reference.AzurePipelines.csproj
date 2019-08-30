@@ -12,14 +12,18 @@
     </Description>
     <PackageProjectUrl>https://github.com/michael-wolfenden/Reference.AzurePipelines</PackageProjectUrl>
     <RepositoryUrl>https://github.com/michael-wolfenden/Reference.AzurePipelines</RepositoryUrl>
-    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <PackageIconUrl>https://raw.githubusercontent.com/michael-wolfenden/Reference.AzurePipelines/master/assets/logo.png</PackageIconUrl>
   </PropertyGroup>
+  <!-- End NuGet -->
 
+  <!-- License: https://github.com/NuGet/Home/wiki/Packaging-License-within-the-nupkg#project-properties -->
+  <PropertyGroup>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+  </PropertyGroup>
   <ItemGroup>
     <None Include="..\..\LICENSE.md" Pack="true" PackagePath="$(PackageLicenseFile)"/>
   </ItemGroup>
-  <!-- End NuGet -->
+  <!-- End License -->
 
   <!-- Strong naming: https://docs.microsoft.com/en-us/dotnet/standard/library-guidance/strong-naming -->
   <PropertyGroup>

@@ -1,12 +1,8 @@
 module.exports = {
   verifyConditions: [
     () => {
-      if (!process.env.NUGET_TOKEN) {
-        throw new SemanticReleaseError(
-          'The environment variable NUGET_TOKEN is required.',
-          'ENOAPMTOKEN',
-        )
-      }
+      if (process.env.NUGET_TOKEN == null || process.env.NUGET_TOKEN === '$(NUGET_TOKEN)')
+        throw new Error('The environment variable NUGET_TOKEN is required.')
     },
     '@semantic-release/changelog',
     '@semantic-release/git',
@@ -16,19 +12,18 @@ module.exports = {
     '@semantic-release/changelog',
     {
       path: '@semantic-release/git',
-      message: 'chore(release): ${nextRelease.version} [***NO_CI***]\n\n${nextRelease.notes}',
+      message:
+        'chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}',
     },
   ],
   publish: [
     {
-      path: '@semantic-release/exec',
-      cmd: `dotnet nuget push artifacts/**/*.nupkg -k ${
-        process.env.NUGET_TOKEN
-      } -s https://api.nuget.org/v3/index.json`,
+      path: '@semantic-release/github',
+      assets: '*.*nupkg',
     },
     {
-      path: '@semantic-release/github',
-      assets: 'artifacts/**/*.nupkg',
+      path: '@semantic-release/exec',
+      cmd: `dotnet nuget push *.nupkg -k ${process.env.NUGET_TOKEN} -s https://api.nuget.org/v3/index.json`,
     },
   ],
 }

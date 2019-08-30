@@ -8,9 +8,8 @@
 # For details, see https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=vsts&tabs=yaml%2Cbatch#secret-variables
 # ========================================================================
 
-# Only trigger CI builds for the master branch, instead of every branch or tags.
-# You'll automatically be configured to build PRs, but you can't currently control
-# that from the YAML directly
+# Only trigger CI builds for the master branch, instead of on other branches or tags.
+# You'll automatically be configured to build PRs
 # For details, see https://docs.microsoft.com/en-us/azure/devops/pipelines/build/triggers
 trigger:
   branches:
@@ -20,48 +19,142 @@ trigger:
       - tags/*
       - refs/tags/*
 
-# Run the linux, macOS and windows jobs in parallel
-# For details, see https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases
 jobs:
-  - template: azure-pipelines_common.yml
-    parameters:
-      name: Linux
-      image: ubuntu-16.04
 
-  - template: azure-pipelines_common.yml
-    parameters:
-      name: Windows
-      image: vs2017-win2016
+# ===========================================================================================
+# GetNextVersionNumber
+# ===========================================================================================
+# Run semantic-release in dry run mode, extract the next release version number and set the
+# nextVersionNumber variable for the following jobs to use.
 
-  - template: azure-pipelines_common.yml
-    parameters:
-      name: macOS
-      image: xcode9-macos10.13
-      dotnet_root: /Users/vsts/.dotnet
+# NOTE: if semantic-release doesn't detect any changes requiring a release, the version will
+# be set to 0.0.0
+# ===========================================================================================
+- job: GetNextVersionNumber
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - bash: |
+      set -Eeuo pipefail
 
-  # If the linux, macOS and windows jobs finish successfully
-  - job: Release
-    pool:
-      vmImage: ubuntu-16.04
-    dependsOn:
-      - Windows
-      - Linux
-    steps:
-      # Download the stored nuget package
-      - task: DownloadBuildArtifacts@0
-        displayName: 'Downloading built nuget packages'
-        inputs:
-          downloadType: specific
-          itemPattern: 'drop/**'
-          downloadPath: artifacts
+      semanticReleaseOutput=$(npx \
+          --quiet \
+          -p semantic-release@15.13.21 \
+          -p @semantic-release/changelog@3.0.4 \
+          -p @semantic-release/git@7.0.16 \
+          -p @semantic-release/exec@3.3.6 \
+          semantic-release --dry-run)
 
-      # Run the Cake 'Release' target which will trigger a release
-      # (Publish to nuget, create a release on github, update the CHANGELOG)
-      # if semantic-release detects any changes since the last release
-      - powershell: .\build.ps1 -target Release_if_changes_since_the_last_release
-        displayName: 'Cake 🍰 - Release if changes since the last release'
-        env:
-          GITHUB_TOKEN: $(GITHUB_TOKEN)
-          NUGET_TOKEN: $(NUGET_TOKEN)
-          DOTNET_CLI_TELEMETRY_OPTOUT: true
-          DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+      nextVersion=$(echo "$semanticReleaseOutput" \
+        | sed -n 's/.* The next release version is \(.*\)$/\1/gip')
+
+      echo "$semanticReleaseOutput"
+
+      if [ -z "$nextVersion" ]
+      then
+          echo "##vso[task.setvariable variable=nextVersionNumber;isOutput=true]0.0.0"
+      else
+          echo "The next release version is ${nextVersion}"
+          echo "##vso[task.setvariable variable=nextVersionNumber;isOutput=true]$nextVersion"
+      fi
+    displayName: Run semantic release to get next version number
+    name: SetNextVersionNumberVariable
+    # Need to explicitly re-map these secret variables so they are decrypted
+    env:
+      GITHUB_TOKEN: $(GITHUB_TOKEN)
+      NUGET_TOKEN: $(NUGET_TOKEN)
+
+# ===========================================================================================
+# Build
+# ===========================================================================================
+# Run the linux, macOS and windows builds
+# ===========================================================================================
+- job: Build
+  dependsOn: GetNextVersionNumber
+
+  strategy:
+    maxParallel: 3
+    matrix:
+      Linux:
+        imageName: 'ubuntu-latest'
+        name: 'ubuntu'
+      macOS:
+        imageName: 'macOS-latest'
+        name: 'macOS'
+        # Need to set the DOTNET_ROOT for macOS as dotnet is not installed in the default location.
+        # For details, see https://github.com/dotnet/cli/issues/9114
+        DOTNET_ROOT: /Users/vsts/.dotnet
+      Windows:
+        imageName: 'windows-latest'
+        name: 'windows'
+
+  pool:
+    vmImage: $(imageName)
+
+  variables:
+    nextVersionNumber: $[ dependencies.GetNextVersionNumber.outputs['SetNextVersionNumberVariable.nextVersionNumber'] ]
+
+  steps:
+  # Build and run tests via Cake.
+  # The produced nuget package and test results will be output to the artifacts folder
+  - powershell: |
+      .\build.ps1 -VersionNumber $(nextVersionNumber)
+    displayName: 'Cake 🍰 - Build & Test'
+    env:
+      # Don’t send any telemetry data.
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+      # This will prevent the CLI from pre-populating the packages cache.
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+
+  # Publish the test results produced by the build so they are visible in the tests tab
+  - task: PublishTestResults@2
+    displayName: 'Publish test results'
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+      testRunTitle: '$(name) Test Run'
+
+  # Store the built nuget and symbol package so they can be downloaded by the 'Release' job
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish artifacts'
+    inputs:
+      pathtoPublish: './artifacts'
+      artifactName: '$(name)-artifacts'
+
+# ===========================================================================================
+# Release
+# ===========================================================================================
+# Run semantic-release to trigger a release (Publish to nuget, create a release on github,
+# update the CHANGELOG) BUT only if semantic-release detects any changes since the last release
+# ===========================================================================================
+- job: Release
+  dependsOn: Build
+
+  pool:
+    vmImage: 'ubuntu-latest'
+
+  steps:
+    # Download the stored nuget and symbol package
+    - task: DownloadPipelineArtifact@2
+      displayName: 'Download artifacts'
+      inputs:
+        artifactName: 'ubuntu-artifacts'
+        buildType: 'current'
+        downloadType: 'single'
+        downloadPath: './'
+
+    # Run semantic-release to trigger a release
+    - bash: |
+        set -Eeuo pipefail
+
+        npx --quiet \
+            -p semantic-release@15.13.21 \
+            -p @semantic-release/changelog@3.0.4 \
+            -p @semantic-release/git@7.0.16 \
+            -p @semantic-release/exec@3.3.6 \
+            semantic-release
+      displayName: Run semantic release to release if relevant changes
+      # Need to explicitly re-map these secret variables so they are decrypted
+      env:
+        GITHUB_TOKEN: $(GITHUB_TOKEN)
+        NUGET_TOKEN: $(NUGET_TOKEN)
