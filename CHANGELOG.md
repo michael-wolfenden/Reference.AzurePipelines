@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/michael-wolfenden/Reference.AzurePipelines/compare/v2.2.0...v2.3.0) (2019-08-30)
+
+
+### Features
+
+* Add symbol packages ([e7fa295](https://github.com/michael-wolfenden/Reference.AzurePipelines/commit/e7fa295))
+
 # [2.2.0](https://github.com/michael-wolfenden/Reference.AzurePipelines/compare/v2.1.0...v2.2.0) (2018-12-17)
 
 
