@@ -1,3 +1,10 @@
+# [2.4.0](https://github.com/michael-wolfenden/Reference.AzurePipelines/compare/v2.3.0...v2.4.0) (2019-10-02)
+
+
+### Features
+
+* Use .NET Core SDK 3.0 allowing running cake as a local tool ([098d904](https://github.com/michael-wolfenden/Reference.AzurePipelines/commit/098d904))
+
 # [2.3.0](https://github.com/michael-wolfenden/Reference.AzurePipelines/compare/v2.2.0...v2.3.0) (2019-08-30)
 
 
