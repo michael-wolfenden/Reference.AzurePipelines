@@ -12,8 +12,11 @@
     </Description>
     <PackageProjectUrl>https://github.com/michael-wolfenden/Reference.AzurePipelines</PackageProjectUrl>
     <RepositoryUrl>https://github.com/michael-wolfenden/Reference.AzurePipelines</RepositoryUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/michael-wolfenden/Reference.AzurePipelines/master/assets/logo.png</PackageIconUrl>
+    <PackageIcon>logo.png</PackageIcon>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\..\assets\logo.png" Pack="true" PackagePath="\"/>
+  </ItemGroup>
   <!-- End NuGet -->
 
   <!-- License: https://github.com/NuGet/Home/wiki/Packaging-License-within-the-nupkg#project-properties -->

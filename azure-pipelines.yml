@@ -95,10 +95,17 @@ jobs:
     nextVersionNumber: $[ dependencies.GetNextVersionNumber.outputs['SetNextVersionNumberVariable.nextVersionNumber'] ]
 
   steps:
+  # Install .NET Core 3.0
+  - task: UseDotNet@2
+    displayName: 'Use dotnet sdk 3.x'
+    inputs:
+      version: 3.x
+
   # Build and run tests via Cake.
   # The produced nuget package and test results will be output to the artifacts folder
-  - powershell: |
-      .\build.ps1 -VersionNumber $(nextVersionNumber)
+  - script: |
+      dotnet tool restore
+      dotnet cake --versionNumber=$(nextVersionNumber)
     displayName: 'Cake 🍰 - Build & Test'
     env:
       # Don’t send any telemetry data.
