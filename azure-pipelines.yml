@@ -39,10 +39,10 @@ jobs:
 
       semanticReleaseOutput=$(npx \
           --quiet \
-          -p semantic-release@15.13.21 \
-          -p @semantic-release/changelog@3.0.4 \
-          -p @semantic-release/git@7.0.16 \
-          -p @semantic-release/exec@3.3.6 \
+          -p semantic-release@15.14.0 \
+          -p @semantic-release/changelog@3.0.6 \
+          -p @semantic-release/git@7.0.18 \
+          -p @semantic-release/exec@3.3.8 \
           semantic-release --dry-run)
 
       nextVersion=$(echo "$semanticReleaseOutput" \
@@ -155,10 +155,10 @@ jobs:
         set -Eeuo pipefail
 
         npx --quiet \
-            -p semantic-release@15.13.21 \
-            -p @semantic-release/changelog@3.0.4 \
-            -p @semantic-release/git@7.0.16 \
-            -p @semantic-release/exec@3.3.6 \
+            -p semantic-release@15.14.0 \
+            -p @semantic-release/changelog@3.0.6 \
+            -p @semantic-release/git@7.0.18 \
+            -p @semantic-release/exec@3.3.8 \
             semantic-release
       displayName: Run semantic release to release if relevant changes
       # Need to explicitly re-map these secret variables so they are decrypted
