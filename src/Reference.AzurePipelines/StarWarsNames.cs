@@ -18,6 +18,7 @@ namespace StarWars.Names
             "Asajj Ventress",
             "Aurra Sing",
             "Senator Bail Organa",
+            "Baby Yoda",
             "Barriss Offee",
             "Bastila Shan",
             "Ben Skywalker",
