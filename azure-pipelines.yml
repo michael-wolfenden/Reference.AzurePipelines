@@ -81,9 +81,6 @@ jobs:
       macOS:
         imageName: 'macOS-latest'
         name: 'macOS'
-        # Need to set the DOTNET_ROOT for macOS as dotnet is not installed in the default location.
-        # For details, see https://github.com/dotnet/cli/issues/9114
-        DOTNET_ROOT: /Users/vsts/.dotnet
       Windows:
         imageName: 'windows-latest'
         name: 'windows'
