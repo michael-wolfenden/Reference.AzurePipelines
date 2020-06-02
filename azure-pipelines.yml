@@ -139,7 +139,7 @@ jobs:
 
   steps:
     # Download the stored nuget and symbol package
-    - task: DownloadPipelineArtifact@2
+    - task: DownloadBuildArtifacts@0
       displayName: 'Download artifacts'
       inputs:
         artifactName: 'ubuntu-artifacts'
