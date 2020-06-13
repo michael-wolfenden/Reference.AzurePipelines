@@ -75,6 +75,7 @@ namespace StarWars.Names
             "Lumiya",
             "Mace Windu",
             "Mara Jade",
+            "Mas Amedda",
             "Mission Vao",
             "Natasi Daala",
             "Nom Anor",
