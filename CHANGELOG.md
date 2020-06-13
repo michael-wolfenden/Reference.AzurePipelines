@@ -1,3 +1,10 @@
+# [2.6.0](https://github.com/michael-wolfenden/Reference.AzurePipelines/compare/v2.5.0...v2.6.0) (2020-06-13)
+
+
+### Features
+
+* Add character 'Baby Yoda' ([8b8fe35](https://github.com/michael-wolfenden/Reference.AzurePipelines/commit/8b8fe3502444a5fa3c4cb79ef1a0dd339bb72110))
+
 # [2.5.0](https://github.com/michael-wolfenden/Reference.AzurePipelines/compare/v2.4.0...v2.5.0) (2019-12-22)
 
 
