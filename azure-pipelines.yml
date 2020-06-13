@@ -146,6 +146,13 @@ jobs:
         buildType: 'current'
         downloadType: 'single'
         downloadPath: './'
+        
+    # Workaround https://github.com/Microsoft/vsts-tasks/issues/6739
+    - task: CopyFiles@2
+      displayName: Copy artifacts to root folder without artifact name
+      inputs:
+        sourceFolder: ./ubuntu-artifacts
+        targetFolder: ./        
 
     # Run semantic-release to trigger a release
     - bash: |
