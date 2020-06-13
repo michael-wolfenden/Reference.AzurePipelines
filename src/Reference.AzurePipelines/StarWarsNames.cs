@@ -106,6 +106,7 @@ namespace StarWars.Names
             "Yoda",
             "Zam Wesell",
             "Zayne Carrick",
+            "Zorii Bliss",
             "Zuckuss"
         }.AsReadOnly();
 
