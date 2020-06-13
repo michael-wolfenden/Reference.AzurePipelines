@@ -1,3 +1,10 @@
+# [2.7.0](https://github.com/michael-wolfenden/Reference.AzurePipelines/compare/v2.6.0...v2.7.0) (2020-06-13)
+
+
+### Features
+
+* Add character 'Mara Jade' ([c1e02af](https://github.com/michael-wolfenden/Reference.AzurePipelines/commit/c1e02af6e66a42b8f078abbaf056419042be956b))
+
 # [2.6.0](https://github.com/michael-wolfenden/Reference.AzurePipelines/compare/v2.5.0...v2.6.0) (2020-06-13)
 
 
